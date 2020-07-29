@@ -30,7 +30,6 @@ class FERG_XML_MANAGER
 
 	public function __construct()
 	{
-		error_log(FERG_XML_MANAGER::LOG_PATH);
 		$this->register_hooks();
 	}
 
