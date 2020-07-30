@@ -152,13 +152,12 @@ $mainClass = new FERG_XML_MANAGER();
 //function to call in the templates
 function ferg_get_event_xml_feed()
 {
-	$plugin_path = plugin_dir_path( __FILE__ );
-	if (!file_exists($plugin_path . "xml.json"))
+	if (!file_exists(FERG_XML_MANAGER::CACHE_SAVE_PATH))
 		do_action('ferg_cron_get_event_xml_feed');
 
-	$strjson = file_get_contents($plugin_path . "xml.json");
+	$strjson = file_get_contents(FERG_XML_MANAGER::CACHE_SAVE_PATH);
 	
-	$json = json_decode($strjson);
+	$json = json_decode($strjson, true);
 	
 	return $json;
 }
