@@ -69,7 +69,20 @@ class FERG_XML_MANAGER
 		
 		//converts xml to just normal php array
 		$jsonstr = json_encode($xml);
-		$json = json_decode($jsonstr,TRUE);
+
+
+		//This pattern limits the character set to only ascii
+		$re = '/[^\x00-\x7F]+/m';
+		$jsonstr = preg_replace($re, "", $jsonstr);
+
+		//this pattern removes hardcoded unicode characters
+		$re = '/\\\\u[^\ ]+/m';
+		$jsonstr = preg_replace($re, "", $jsonstr);
+
+
+		$json = json_decode($jsonstr, true);
+
+
 
 		return $json;
 	}
@@ -107,6 +120,7 @@ class FERG_XML_MANAGER
 	private function events_category_filter($event)
 	{
 		$ferg_cat_filter = array(
+			90, //arts united
 			91, //visual arts
 			92, //music
 			93, //cinema
