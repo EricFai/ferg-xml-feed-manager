@@ -23,7 +23,7 @@ define( 'FXMLM', '1.0.0' );
 //main class
 class FERG_XML_MANAGER
 {
-	const DEBUG_MODE = true;
+	const DEBUG_MODE = false;
 	const CACHE_SAVE_PATH = __DIR__ . "/xml.json";
 	const LOG_PATH = __DIR__ . "/log.json";
 
