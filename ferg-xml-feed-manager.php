@@ -62,7 +62,7 @@ class FERG_XML_MANAGER
 	private function get_xml_feed_as_json($xml_link)
 	{
 		//grab xml feed
-		$xmlstr = file_get_contents($xml_link);
+		$xmlstr = $this->query_xml_feed($xml_link);
 		
 		//parse xml
 		$xml = new SimpleXMLElement($xmlstr);
@@ -85,6 +85,25 @@ class FERG_XML_MANAGER
 
 
 		return $json;
+	}
+
+	public function query_xml_feed($xml_link)
+	{
+		$method = "GET";
+		$ch = curl_init();
+
+		curl_setopt_array($ch, [
+			CURLOPT_URL => $xml_link,
+			CURLOPT_CUSTOMREQUEST => "GET",
+			CURLOPT_RETURNTRANSFER => 1,
+		]);
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
+		error_log($response);
+
+		return $response;
 	}
 
 	private function save_feed_to_cache($jsonObject)
@@ -160,8 +179,7 @@ class FERG_XML_MANAGER
 	}
 }
 
-
-$mainClass = new FERG_XML_MANAGER();
+$FERG_XML_MANAGER = new FERG_XML_MANAGER();
 
 //function to call in the templates
 function ferg_get_event_xml_feed()
@@ -170,7 +188,6 @@ function ferg_get_event_xml_feed()
 		do_action('ferg_cron_get_event_xml_feed');
 
 	$strjson = file_get_contents(FERG_XML_MANAGER::CACHE_SAVE_PATH);
-	
 	$json = json_decode($strjson, true);
 	
 	return $json;
