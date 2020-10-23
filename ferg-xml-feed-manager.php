@@ -101,8 +101,6 @@ class FERG_XML_MANAGER
 		$response = curl_exec($ch);
 		curl_close($ch);
 
-		error_log($response);
-
 		return $response;
 	}
 
@@ -154,8 +152,9 @@ class FERG_XML_MANAGER
 	
 		$categories = $event['eventcategories']['eventcategory'];
 	
-		if (is_iterable($categories))
+		if (isset($categories[0]) && is_array($categories[0]))
 		{
+			// log_dump($categories);
 			foreach($categories as $cat )
 			{
 				if (isset($cat['categoryid']))
@@ -168,7 +167,8 @@ class FERG_XML_MANAGER
 			}
 		}else{ //manage weird artifact from converting from xml
 			if (!isset($categories['categoryid'])) return false;
-			
+
+			log_dump("MADE IT");
 			foreach($ferg_cat_filter as $cat_id)
 			{
 				if ($categories['categoryid'] == $cat_id) return true;
